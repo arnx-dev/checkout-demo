@@ -5,16 +5,22 @@ A demo for [arnx](https://github.com/arnx-dev/arnx). Not a real shop.
 The `main` branch is a tiny checkout: a cart, shipping and tax. The `discount-codes` branch adds discount
 codes, with tests that pass and **a bug we planted on purpose**. Run arnx on it and see whether it finds the bug.
 
-You need Docker running, [arnx](https://github.com/arnx-dev/arnx#try-it) installed, and an Anthropic API key.
+You need [arnx](https://github.com/arnx-dev/arnx#try-it) installed and an Anthropic API key. No key? Run `arnx login`
+and arnx cloud runs the models: `arnx scan` switches to it by itself, and `arnx init --cloud` sets it for the review.
 
     git clone https://github.com/arnx-dev/checkout-demo && cd checkout-demo
     git switch discount-codes
     export ANTHROPIC_API_KEY=...
+    arnx scan
+
+`arnx scan` reads the branch's change and lists what may be broken, in under a minute: no Docker, nothing run.
+Each suspect is a guess until a test fails. To prove them, with Docker running:
+
     arnx init
     arnx review
 
-`arnx review` works out how to run the tests, reads the branch's change, writes tests for what looks broken and
-runs them in Docker. Your key pays for the models. The report is in `.arnx/reviews/`.
+`arnx review` works out how to run the tests, writes tests for what looks broken and runs them in Docker. Your key
+pays for the models. The report is in `.arnx/reviews/`.
 
 Results vary between runs, because a model writes the tests.
 
